@@ -13,12 +13,15 @@ app.secret_key = "inclucv_secret_key_2024"
 
 # ── Database connection ──────────────────────────────────────
 def get_db_connection():
-   def get_db_connection():
-    conn = psycopg2.connect(
-        "postgresql://inclucv_user:hHpLdpfQJP5RBJvuJBPLJcypFk6XteuN@dpg-d8v5r38js32c738navig-a.oregon-postgres.render.com/inclucv",
-        sslmode="require"
-    )
-    return conn
+  def get_db_connection():
+    try:
+        conn = psycopg2.connect(
+            "postgresql://inclucv_user:hHpLdpfQJP5RBJvuJBPLJcypFk6XteuN@dpg-d8v5r38js32c738navig-a.oregon-postgres.render.com/inclucv?sslmode=require"
+        )
+        return conn
+    except Exception as e:
+        print(f"Connection error: {e}")
+        return None
     
 
 
