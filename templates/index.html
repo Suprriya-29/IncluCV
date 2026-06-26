@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IncluCV — Resumes Built for Every Voice</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <span class="nav-logo">Inclu<span class="accent">CV</span></span>
+    <a href="/builder" class="btn-primary">Build My Resume</a>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-tag">For the Deaf & Hard of Hearing Community</div>
+    <h1 class="hero-title">
+      Your skills speak.<br/>
+      <span class="accent">We help employers listen.</span>
+    </h1>
+    <p class="hero-sub">
+      IncluCV builds your resume <em>and</em> generates an Employer Guide —
+      a plain-language document that tells hiring managers exactly how to
+      work with you, respect your communication style, and meet their
+      legal obligations.
+    </p>
+    <a href="/builder" class="btn-primary btn-large">Build My Resume — It's Free</a>
+
+    <!-- ── what makes it different ── -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">📄</div>
+        <h3>Disability-Aware Resume</h3>
+        <p>Captures your communication preferences, assistive tools, and accommodation needs — sections no standard resume builder has.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤝</div>
+        <h3>Auto Employer Guide</h3>
+        <p>A second document generated alongside your resume — tells the employer how to interview you, set up your workspace, and comply with Indian disability law.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚖️</div>
+        <h3>Know Your Rights</h3>
+        <p>Every guide includes the relevant section of the Rights of Persons with Disabilities Act 2016 so employers know their legal obligations.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="how">
+    <h2 class="section-title">How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Fill the form</h4>
+        <p>Enter your professional details, disability type, and how you prefer to communicate.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>We generate both documents</h4>
+        <p>Your resume and a tailored Employer Guide appear side by side instantly.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Print and apply</h4>
+        <p>Send both documents together. Employers know exactly what to do before you even walk in.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <p>IncluCV — Built to close the accessibility gap in hiring.</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Build Your Resume — IncluCV</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body class="builder-page">
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <a href="/" class="nav-logo">Inclu<span class="accent">CV</span></a>
+    <span class="nav-hint">Fill every section for the best result</span>
+  </nav>
+
+  <div class="builder-layout">
+
+    <!-- ── PROGRESS SIDEBAR ── -->
+    <aside class="progress-bar">
+      <p class="progress-label">Sections</p>
+      <ul class="progress-list">
+        <li class="prog-item active" data-section="personal">Personal Info</li>
+        <li class="prog-item" data-section="disability">Accessibility Info</li>
+        <li class="prog-item" data-section="professional">Professional Info</li>
+        <li class="prog-item" data-section="experience">Experience</li>
+        <li class="prog-item" data-section="education">Education</li>
+      </ul>
+    </aside>
+
+    <!-- ── FORM ── -->
+    <main class="form-area">
+      <form method="POST" action="/builder" id="resumeForm">
+
+        <!-- SECTION 1: Personal -->
+        <section class="form-section active" id="section-personal">
+          <h2 class="section-heading">Personal Information</h2>
+          <p class="section-desc">Basic details that go at the top of your resume.</p>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="full_name">Full Name *</label>
+              <input type="text" id="full_name" name="full_name" placeholder="e.g. Priya Sharma" required/>
+            </div>
+            <div class="field">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" placeholder="priya@email.com" required/>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="phone">Phone / WhatsApp Number</label>
+              <input type="text" id="phone" name="phone" placeholder="+91 98765 43210"/>
+            </div>
+            <div class="field">
+              <label for="location">City, State</label>
+              <input type="text" id="location" name="location" placeholder="Chennai, Tamil Nadu"/>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn-primary" onclick="nextSection('personal','disability')">Next →</button>
+          </div>
+        </section>
+
+        <!-- SECTION 2: Accessibility -->
+        <section class="form-section" id="section-disability">
+          <h2 class="section-heading">Accessibility Information</h2>
+          <p class="section-desc">This section powers your Employer Guide. Be honest — it helps employers support you properly.</p>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="disability_type">Disability Type *</label>
+              <select id="disability_type" name="disability_type" required>
+                <option value="">-- Select --</option>
+                <option value="Deaf">Deaf</option>
+                <option value="Hard of Hearing">Hard of Hearing</option>
+                <option value="Mute">Mute</option>
+                <option value="Deaf-Mute">Deaf-Mute</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="comm_preference">Communication Preference *</label>
+              <select id="comm_preference" name="comm_preference" required>
+                <option value="">-- Select --</option>
+                <option value="Sign Language">Sign Language (ISL)</option>
+                <option value="Text Chat">Text Chat / Written</option>
+                <option value="Lip Reading">Lip Reading</option>
+                <option value="Text-to-Speech App">Text-to-Speech App</option>
+                <option value="Email Only">Email Only</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="assistive_tools">Assistive Tools You Use</label>
+            <input type="text" id="assistive_tools" name="assistive_tools"
+              placeholder="e.g. Hearing aid, speech-to-text software, visual alerts on phone"/>
+            <span class="field-hint">Separate each tool with a comma</span>
+          </div>
+
+          <div class="field">
+            <label for="accommodation_requests">Workplace Accommodations You Need</label>
+            <textarea id="accommodation_requests" name="accommodation_requests" rows="3"
+              placeholder="e.g. Written meeting agendas, no phone interviews, interpreter for client calls, visual fire alarm"></textarea>
+            <span class="field-hint">Be specific — this goes directly into the Employer Guide</span>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn-secondary" onclick="prevSection('disability','personal')">← Back</button>
+            <button type="button" class="btn-primary" onclick="nextSection('disability','professional')">Next →</button>
+          </div>
+        </section>
+
+        <!-- SECTION 3: Professional -->
+        <section class="form-section" id="section-professional">
+          <h2 class="section-heading">Professional Profile</h2>
+
+          <div class="field">
+            <label for="summary">Professional Summary</label>
+            <textarea id="summary" name="summary" rows="4"
+              placeholder="Write 2–3 sentences about who you are professionally. e.g. 'Experienced graphic designer with 4 years in brand identity and digital marketing. Proficient in Adobe Creative Suite and Figma.'"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="skills">Key Skills *</label>
+            <input type="text" id="skills" name="skills"
+              placeholder="e.g. Graphic Design, Adobe Illustrator, Figma, MS Excel, Python" required/>
+            <span class="field-hint">Separate each skill with a comma</span>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn-secondary" onclick="prevSection('professional','disability')">← Back</button>
+            <button type="button" class="btn-primary" onclick="nextSection('professional','experience')">Next →</button>
+          </div>
+        </section>
+
+        <!-- SECTION 4: Experience -->
+        <section class="form-section" id="section-experience">
+          <h2 class="section-heading">Work Experience</h2>
+          <p class="section-desc">Add up to 3 jobs. Leave blank if you have no work experience yet.</p>
+
+          <div id="experience-entries">
+            <!-- Entry 1 -->
+            <div class="experience-entry">
+              <h4 class="entry-label">Job 1</h4>
+              <div class="field-row">
+                <div class="field">
+                  <label>Job Title</label>
+                  <input type="text" name="exp_title" placeholder="e.g. Graphic Designer"/>
+                </div>
+                <div class="field">
+                  <label>Company Name</label>
+                  <input type="text" name="exp_company" placeholder="e.g. Zoho Corporation"/>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>Years</label>
+                  <input type="text" name="exp_years" placeholder="e.g. 2021 – 2023"/>
+                </div>
+                <div class="field">
+                  <label>What did you do?</label>
+                  <input type="text" name="exp_desc" placeholder="e.g. Designed marketing materials for 50+ clients"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Entry 2 -->
+            <div class="experience-entry">
+              <h4 class="entry-label">Job 2 <span class="optional">(optional)</span></h4>
+              <div class="field-row">
+                <div class="field"><input type="text" name="exp_title" placeholder="Job Title"/></div>
+                <div class="field"><input type="text" name="exp_company" placeholder="Company Name"/></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><input type="text" name="exp_years" placeholder="Years"/></div>
+                <div class="field"><input type="text" name="exp_desc" placeholder="What did you do?"/></div>
+              </div>
+            </div>
+
+            <!-- Entry 3 -->
+            <div class="experience-entry">
+              <h4 class="entry-label">Job 3 <span class="optional">(optional)</span></h4>
+              <div class="field-row">
+                <div class="field"><input type="text" name="exp_title" placeholder="Job Title"/></div>
+                <div class="field"><input type="text" name="exp_company" placeholder="Company Name"/></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><input type="text" name="exp_years" placeholder="Years"/></div>
+                <div class="field"><input type="text" name="exp_desc" placeholder="What did you do?"/></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn-secondary" onclick="prevSection('experience','professional')">← Back</button>
+            <button type="button" class="btn-primary" onclick="nextSection('experience','education')">Next →</button>
+          </div>
+        </section>
+
+        <!-- SECTION 5: Education -->
+        <section class="form-section" id="section-education">
+          <h2 class="section-heading">Education</h2>
+          <p class="section-desc">Add up to 3 qualifications.</p>
+
+          <!-- Edu Entry 1 -->
+          <div class="experience-entry">
+            <h4 class="entry-label">Qualification 1</h4>
+            <div class="field-row">
+              <div class="field">
+                <label>Degree / Course</label>
+                <input type="text" name="edu_degree" placeholder="e.g. B.Sc Computer Science"/>
+              </div>
+              <div class="field">
+                <label>School / College</label>
+                <input type="text" name="edu_school" placeholder="e.g. Anna University"/>
+              </div>
+            </div>
+            <div class="field" style="max-width:200px">
+              <label>Year of Completion</label>
+              <input type="text" name="edu_year" placeholder="e.g. 2022"/>
+            </div>
+          </div>
+
+          <!-- Edu Entry 2 -->
+          <div class="experience-entry">
+            <h4 class="entry-label">Qualification 2 <span class="optional">(optional)</span></h4>
+            <div class="field-row">
+              <div class="field"><input type="text" name="edu_degree" placeholder="Degree / Course"/></div>
+              <div class="field"><input type="text" name="edu_school" placeholder="School / College"/></div>
+            </div>
+            <div class="field" style="max-width:200px">
+              <input type="text" name="edu_year" placeholder="Year"/>
+            </div>
+          </div>
+
+          <!-- Edu Entry 3 -->
+          <div class="experience-entry">
+            <h4 class="entry-label">Qualification 3 <span class="optional">(optional)</span></h4>
+            <div class="field-row">
+              <div class="field"><input type="text" name="edu_degree" placeholder="Degree / Course"/></div>
+              <div class="field"><input type="text" name="edu_school" placeholder="School / College"/></div>
+            </div>
+            <div class="field" style="max-width:200px">
+              <input type="text" name="edu_year" placeholder="Year"/>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn-secondary" onclick="prevSection('education','experience')">← Back</button>
+            <button type="submit" class="btn-generate">
+              ✨ Generate Resume &amp; Employer Guide
+            </button>
+          </div>
+        </section>
+
+      </form>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

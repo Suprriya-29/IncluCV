@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Resume — IncluCV</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body class="result-page">
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <a href="/" class="nav-logo">Inclu<span class="accent">CV</span></a>
+    <div class="nav-actions">
+      <button class="btn-secondary" onclick="window.print()">🖨 Print Both Documents</button>
+      <a href="/builder" class="btn-primary">Build Another</a>
+    </div>
+  </nav>
+
+  <div class="result-header">
+    <h1>Your documents are ready, <span class="accent">{{ resume.full_name.split()[0] }}</span>!</h1>
+    <p>Print both pages below and send them together when you apply for a job.</p>
+  </div>
+
+  <!-- ── TWO DOCUMENTS SIDE BY SIDE ── -->
+  <div class="documents-layout">
+
+    <!-- ════ LEFT: RESUME ════ -->
+    <div class="document resume-doc">
+      <div class="doc-label">📄 Your Resume</div>
+
+      <!-- Header -->
+      <div class="resume-header">
+        <h1 class="resume-name">{{ resume.full_name }}</h1>
+        <div class="resume-contact">
+          {% if resume.email %}<span>✉ {{ resume.email }}</span>{% endif %}
+          {% if resume.phone %}<span>📞 {{ resume.phone }}</span>{% endif %}
+          {% if resume.location %}<span>📍 {{ resume.location }}</span>{% endif %}
+        </div>
+        <div class="resume-comm-badge">
+          {{ resume.disability_type }} · Prefers {{ resume.comm_preference }}
+        </div>
+      </div>
+
+      <!-- Summary -->
+      {% if resume.summary %}
+      <div class="resume-section">
+        <h3 class="resume-section-title">Profile</h3>
+        <p>{{ resume.summary }}</p>
+      </div>
+      {% endif %}
+
+      <!-- Skills -->
+      {% if skills_list %}
+      <div class="resume-section">
+        <h3 class="resume-section-title">Skills</h3>
+        <div class="skills-grid">
+          {% for skill in skills_list %}
+          <span class="skill-tag">{{ skill }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Accessibility Profile -->
+      <div class="resume-section accessibility-section">
+        <h3 class="resume-section-title">Accessibility Profile</h3>
+        {% if resume.assistive_tools %}
+        <p><strong>Assistive tools:</strong> {{ resume.assistive_tools }}</p>
+        {% endif %}
+        {% if resume.accommodation_requests %}
+        <p><strong>Accommodation requests:</strong> {{ resume.accommodation_requests }}</p>
+        {% endif %}
+        <p class="legal-note">Protected under the Rights of Persons with Disabilities Act 2016 (India)</p>
+      </div>
+
+      <!-- Experience -->
+      {% if resume.experience %}
+      <div class="resume-section">
+        <h3 class="resume-section-title">Work Experience</h3>
+        {% for job in resume.experience %}
+        <div class="timeline-item">
+          <div class="timeline-top">
+            <strong>{{ job.title }}</strong>
+            <span class="timeline-years">{{ job.years }}</span>
+          </div>
+          <div class="timeline-company">{{ job.company }}</div>
+          {% if job.desc %}<p class="timeline-desc">{{ job.desc }}</p>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Education -->
+      {% if resume.education %}
+      <div class="resume-section">
+        <h3 class="resume-section-title">Education</h3>
+        {% for edu in resume.education %}
+        <div class="timeline-item">
+          <div class="timeline-top">
+            <strong>{{ edu.degree }}</strong>
+            <span class="timeline-years">{{ edu.year }}</span>
+          </div>
+          <div class="timeline-company">{{ edu.school }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </div><!-- end resume-doc -->
+
+
+    <!-- ════ RIGHT: EMPLOYER GUIDE ════ -->
+    <div class="document guide-doc">
+      <div class="doc-label">🤝 Employer Guide</div>
+
+      <div class="guide-header">
+        <h2>Working with {{ resume.full_name }}</h2>
+        <p class="guide-subtitle">
+          This document was generated alongside {{ resume.full_name }}'s resume.
+          It explains how to create an inclusive hiring process and workplace
+          for this candidate.
+        </p>
+      </div>
+
+      <div class="guide-body">
+        {% for line in employer_guide.split('\n') %}
+          {% if line.strip() == '' %}
+            <br/>
+          {% elif line.isupper() and line.endswith(':') %}
+            <h4 class="guide-subheading">{{ line }}</h4>
+          {% elif line.startswith('- ') %}
+            <p class="guide-bullet">{{ line[2:] }}</p>
+          {% else %}
+            <p class="guide-line">{{ line }}</p>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Interview checklist -->
+      <div class="checklist-box">
+        <h4>📋 Quick Interview Checklist for HR</h4>
+        <label class="check-item">
+          <input type="checkbox"/> Shared interview questions in writing in advance
+        </label>
+        <label class="check-item">
+          <input type="checkbox"/> Arranged interpreter / text-based interview format
+        </label>
+        <label class="check-item">
+          <input type="checkbox"/> Ensured interview room has good lighting (for lip reading)
+        </label>
+        <label class="check-item">
+          <input type="checkbox"/> Confirmed no phone-call rounds in the process
+        </label>
+        <label class="check-item">
+          <input type="checkbox"/> Discussed accommodation needs with candidate beforehand
+        </label>
+        <label class="check-item">
+          <input type="checkbox"/> HR team briefed on disability etiquette
+        </label>
+      </div>
+
+    </div><!-- end guide-doc -->
+
+  </div><!-- end documents-layout -->
+
+  <div class="result-footer">
+    <p>Resume ID: #{{ resume.id }} · Generated by IncluCV · <a href="/builder">Build another →</a></p>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
