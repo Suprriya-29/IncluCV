@@ -1,37 +1,21 @@
-# ============================================================
-#  IncluCV - Flask Backend (PostgreSQL version)
-#  File: app.py
-#  Run with: python app.py
-# ============================================================
-
 from flask import Flask, render_template, request, redirect, url_for, session
 import psycopg2
 import json
+import os
 
 app = Flask(__name__)
 app.secret_key = "inclucv_secret_key_2024"
 
-# ── Database connection ──────────────────────────────────────
+DATABASE_URL = "postgresql://inclucv_user:hHpLdpfQJP5RBJvuJBPLJcypFk6XteuN@dpg-d8v5r38js32c738navig-a.oregon-postgres.render.com/inclucv"
+
 def get_db_connection():
-  def get_db_connection():
-    try:
-        conn = psycopg2.connect(
-            "postgresql://inclucv_user:hHpLdpfQJP5RBJvuJBPLJcypFk6XteuN@dpg-d8v5r38js32c738navig-a.oregon-postgres.render.com/inclucv?sslmode=require"
-        )
-        return conn
-    except Exception as e:
-        print(f"Connection error: {e}")
-        return None
-    
+    conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+    return conn
 
-
-# ── Home page ────────────────────────────────────────────────
 @app.route("/")
 def index():
     return render_template("index.html")
 
-
-# ── Resume Builder ───────────────────────────────────────────
 @app.route("/builder", methods=["GET", "POST"])
 def builder():
     if request.method == "GET":
@@ -78,7 +62,6 @@ def builder():
                 "year":   edu_years[i].strip()   if i < len(edu_years)   else "",
             })
 
-    # ── Save to database ─────────────────────────────────────
     try:
         conn   = get_db_connection()
         cursor = conn.cursor()
@@ -105,10 +88,7 @@ def builder():
     except Exception as e:
         return f"<h2>Database error: {e}</h2><p>Check your PostgreSQL connection in app.py</p>"
 
-    # ── Generate employer guide ───────────────────────────────
-    employer_guide = generate_employer_guide(
-        full_name, disability_type, comm_preference
-    )
+    employer_guide = generate_employer_guide(full_name, disability_type, comm_preference)
 
     session["resume"] = {
         "id":             resume_id,
@@ -129,8 +109,6 @@ def builder():
 
     return redirect(url_for("result"))
 
-
-# ── Result page ───────────────────────────────────────────────
 @app.route("/result")
 def result():
     resume         = session.get("resume")
@@ -148,8 +126,6 @@ def result():
         employer_guide=employer_guide
     )
 
-
-# ── Generate employer guide ───────────────────────────────────
 def generate_employer_guide(name, disability_type, comm_preference):
     try:
         conn   = get_db_connection()
@@ -174,15 +150,15 @@ def generate_employer_guide(name, disability_type, comm_preference):
         if row:
             return row[0].replace("{name}", name)
 
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Guide generation error: {e}")
 
     return f"""This guide has been auto-generated to help you work effectively with {name}.
 
 COMMUNICATION:
 - Please discuss with {name} their preferred communication method before the first day.
 - Always provide written versions of important verbal communications.
-- Be patient and flexible — communication preferences may vary by situation.
+- Be patient and flexible.
 
 INTERVIEWS:
 - Ask {name} in advance what format works best for them.
@@ -195,7 +171,5 @@ WORKPLACE SETUP:
 LEGAL NOTE:
 Under the Rights of Persons with Disabilities Act 2016 (India), employers are legally required to make reasonable accommodations for employees with disabilities."""
 
-
-# ── Run the app ───────────────────────────────────────────────
 if __name__ == "__main__":
     app.run(debug=True)
