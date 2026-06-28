@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 app.secret_key = "inclucv_secret_key_2024"
 
-DATABASE_URL = "postgresql://inclucv_user:hHpLdpfQJP5RBJvuJBPLJcypFk6XteuN@dpg-d8v5r38js32c738navig-a.oregon-postgres.render.com/inclucv"
+DATABASE_URL = "postgresql://postgres.ijxfuvdiblljshkhusdo:IncluCV%402026@aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres"
 
 def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL, sslmode="require")
